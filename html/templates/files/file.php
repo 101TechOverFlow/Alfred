@@ -8,7 +8,7 @@
             <div class="file-tags">
             <%if(this.data[i].tags) {%>
                 <%for(var j in this.data[i].tags) {%>
-                    <div data-t_id="<%this.data[i].tags[j].t_id%>" class="tag remove" onclick="">
+                    <div data-t_id="<%this.data[i].tags[j].t_id%>" class="tag remove" onclick="javascript:_FILES.removeTag('<%this.data[i].f_id%>','<%this.data[i].tags[j].t_id%>');">
                         <span><%this.data[i].tags[j].t_name%></span>
                     </div>
                 <%}%>

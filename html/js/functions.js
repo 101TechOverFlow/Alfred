@@ -8,6 +8,7 @@ function selectFile(fId){
     else{
         selectedFile.splice(selectedFile.indexOf(fId), 1);
     }
+    selectedFile = jQuery.unique(selectedFile);
     console.log(selectedFile);
 }
 

@@ -36,6 +36,9 @@ $(function(){
             if($(this).hasClass("fa-trash-o")){
                 $(".content .file.selected").css('box-shadow', 'rgba(231, 76, 60, 0.75) 0px 0px 0px 4px');
             }
+            if($(this).hasClass("fa-reply")){
+                $(".content .file.selected").css('box-shadow', 'rgba(52, 152, 219, 0.75) 0px 0px 0px 4px');
+            }
             if($(this).hasClass("fa-share-alt")){
                 $(".content .file.selected").css('box-shadow', 'rgba(155,89,182, 0.75) 0px 0px 0px 4px');
             }
