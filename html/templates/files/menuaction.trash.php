@@ -4,4 +4,4 @@
 </div>
 <i title="Download" class="fa fa-cloud-download" onclick=""></i>                   
 <i title="Restore" class="fa fa-reply" onclick="javascript:_FILES.restore();"></i>
-<i title="Destroy" class="fa fa-trash-o" onclick=""></i>
+<i title="Destroy" class="fa fa-trash-o" onclick="javascript:_FILES.destroy();"></i>

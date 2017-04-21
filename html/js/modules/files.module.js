@@ -17,13 +17,13 @@ class Files {
                     type: 'GET',
                     success: function( data ){
                             var fsData = JSON.parse(data);                   
-                            if(fsData.code == 302){
-                                    $(".file[data-f_id="+fId+"]").remove();
+                            if(fsData.code == 302){                                   
                             }else{
                                     alert(fsData.data);
                             }
                         }
                     });
+                    $(".file[data-f_id="+fId+"]").remove();
                 }
             }
         }
@@ -38,17 +38,39 @@ class Files {
                 url:formData,
                 type: 'GET',
                 success: function( data ){
-                    console.log(data);
-                        var fsData = JSON.parse(data);
-                        
-                        if(fsData.code == 302){
-                                $(".file[data-f_id="+fId+"]").remove();
+                        var fsData = JSON.parse(data);                        
+                        if(fsData.code == 302){                                
                         }else{
                                 alert(fsData.data);
                         }
                     }
                 });
+                $(".file[data-f_id="+fId+"]").remove();
             }			
+        }
+    }
+    
+    destroy() {
+        if(selectedFile.length > 0){
+            var r = confirm("Do you want to destroy these files ?");
+            if(r){
+                    for(var i=0;i<selectedFile.length;i++){	
+                            var fId = selectedFile[i];
+                            var formData = "api/file/index.php?a=destroy&p={\"f_id\":"+fId+"}";
+                            $.ajax({
+                            url:formData,
+                            type: 'GET',
+                            success: function( data ){
+                                var fsData = JSON.parse(data);                            
+                                if(fsData.code == 302){                                    
+                                }else{
+                                    alert(fsData.data);
+                                }
+                            }
+                        });
+                        $(".file[data-f_id="+fId+"]").remove();
+                    }
+            }
         }
     }
     
