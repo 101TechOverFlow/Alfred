@@ -1,9 +1,8 @@
 # Alfred : Awesome Local and Fantastic E-home Director
 
-** Alfred gives you freedom and control over your own data.
-A personal cloud which runs on your own server.**
+**Alfred gives you freedom and control over your own data. A personal cloud which runs on your own server.**
 
-##Disclamers
+## Disclamers
 Please keep in mind that Alfred is in early beta release
 
 ## Why is it Awesome and Fantastic
