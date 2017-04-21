@@ -3,7 +3,7 @@ session_start();
 require("../../config.php");
 require("sql.php");
 
-$api = new FileAPI();
+$api = new GroupAPI();
 
 class GroupAPI{
     var $database;    
@@ -40,9 +40,14 @@ class GroupAPI{
                 $g_id = $params->g_id;
         }        
         if($g_id > 0 && $u_id){
-            $this->database->insertUserInGroup($u_id, $g_id);
-            $this->database->updateGroupNb( $g_id , "add");
-            die(json_encode(array("code"=>302, "data"=> "success")));
+            if(!$this->database->checkUserMember($g_id, $_SESSION["id"])){
+                $this->database->insertUserInGroup($_SESSION["id"], $g_id);
+                $this->database->updateGroupNb( $g_id , "add");
+                die(json_encode(array("code"=>302, "data"=> "success")));
+            }
+            else {
+                die(json_encode(array("code"=> 404, "data" => "user is already in group")));
+            }
         }
         else{
             die(json_encode(array("code"=> 404, "data" => "unknown user or group")));
@@ -60,7 +65,7 @@ class GroupAPI{
                 $g_id = $params->g_id;
         }        
         if($g_id > 0 && $u_id){
-            $this->database->removeUserInGroup($u_id, $g_id);
+            $this->database->removeUserInGroup($_SESSION["id"], $g_id);
             $this->database->updateGroupNb( $g_id , "remove");
             die(json_encode(array("code"=>302, "data"=> "success")));
         }
@@ -70,6 +75,7 @@ class GroupAPI{
     }
     
     private function rename($params){
+        $params = json_decode($params);        
         $g_id = -1;
         if(is_numeric(@$params->g_id)){
                 $g_id = $params->g_id;
@@ -85,6 +91,7 @@ class GroupAPI{
     }
     
     private function search($params){
+        $params = json_decode($params);
         $keyword = htmlspecialchars(trim(@$params->query));
         if($keyword != ""){
             $results = $this->database->searchGroups( $keyword );		
@@ -96,9 +103,10 @@ class GroupAPI{
     }
     
     private function create($params){
+        $params = json_decode($params);        
         $g_name = htmlspecialchars(trim(@$params->g_name));
         if($g_name != ""){
-            $this->database->createGroup($g_id);
+            $this->database->insertGroup($g_name);
             die(json_encode(array("code"=>302, "data"=> "success")));
         }
         die(json_encode(array("code"=> 404, "data" => "wrong group name")));

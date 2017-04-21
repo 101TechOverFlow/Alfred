@@ -304,6 +304,35 @@ class FileAPI{
         }
     }
     
+    private function share($params){
+        $params = json_decode($params);
+        $f_ids = @$params->f_id; // Array of file ids        
+        $g_id = -1;
+        if(is_numeric(@$params->g_id)){
+            $f_id = $params->g_id;
+        }
+        $rule = htmlspecialchars(trim(@$params->rule));
+        $read = 0; $write = 0; $delete = 0;
+        if($rule == "delete"){
+            $delete = 1; $write = 1; $read = 1;
+        } 
+        else if($rule == "write"){
+            $write = 1; $read = 1;
+        }
+        else {
+            $read = 1;
+        }        
+        foreach($f_ids as $f_id){
+            if(is_numeric($f_id)){
+                $f_data = $this->database->getFile($f_id);
+                if($f_data["f_id"] == $f_id && !$this->database->checkGroupAccess($g_id,$f_id)){
+                    $this->database->insertGroupAccess($f_id, $g_id, $read, $write, $delete);
+                }
+            }  
+        }
+        die(json_encode(array("code"=> 302, "data" => "done")));                
+    }
+    
 }
 
 ?>

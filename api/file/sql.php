@@ -58,7 +58,7 @@ class SQL extends Database{
     public function searchFiles( $searched, $trash=0){
         $list = join("','",$searched);        
         $nb = count($searched);
-        $q = "SELECT DISTINCT `files`.* FROM `files`,`files_access` WHERE ((`files`.`u_id`=:uid OR (`files_access`.`f_id` = :fid AND `files_access`.`g_id` = `users_groups`.`g_id` AND `users_groups`.`u_id` = :uid AND `files_access`.`i_read`='1'))  AND `files`.`f_trash`=:trash) AND :nb = (SELECT count(*) FROM `tags` INNER JOIN `files_tags` ON `files_tags`.`t_id` = `tags`.`t_id` WHERE `files_tags`.`f_id` = `files`.`f_id` AND `tags`.`t_name` IN ('$list')) ORDER BY `files`.`f_name` ASC LIMIT 100;";
+        $q = "SELECT DISTINCT `files`.* FROM `users_members`,`files`,`files_access` WHERE ((`files`.`u_id`=:uid OR (`files_access`.`f_id` = `files`.`f_id` AND `files_access`.`g_id` = `users_members`.`g_id` AND `users_members`.`u_id` = :uid AND `files_access`.`i_read`='1'))  AND `files`.`f_trash`=:trash) AND :nb = (SELECT count(*) FROM `tags` INNER JOIN `files_tags` ON `files_tags`.`t_id` = `tags`.`t_id` WHERE `files_tags`.`f_id` = `files`.`f_id` AND `tags`.`t_name` IN ('$list')) ORDER BY `files`.`f_name` ASC LIMIT 100;";
         $query = $this->sql->prepare($q);
         $query->bindParam(":searchedTags",$list);
         $query->bindParam(":trash",$trash);
@@ -70,7 +70,7 @@ class SQL extends Database{
     }
     
     public function getFiles($trash=0){
-        $q = "SELECT DISTINCT `files`.* FROM `files`,`files_access` WHERE ((`files`.`u_id`=:uid OR (`files_access`.`f_id` = :fid AND `files_access`.`g_id` = `users_groups`.`g_id` AND `users_groups`.`u_id` = :uid AND `files_access`.`i_read`='1'))  AND `files`.`f_trash`=:trash) ORDER BY `files`.`f_name` ASC LIMIT 100;";
+        $q = "SELECT DISTINCT `files`.* FROM `users_members`,`files`,`files_access` WHERE ((`files`.`u_id`=:uid OR (`files_access`.`f_id` = `files`.`f_id` AND `files_access`.`g_id` = `users_members`.`g_id` AND `users_members`.`u_id` = :uid AND `files_access`.`i_read`='1'))  AND `files`.`f_trash`=:trash) ORDER BY `files`.`f_name` ASC LIMIT 100;";
         $query = $this->sql->prepare($q);
         $query->bindParam(":trash",$trash);
         $query->bindParam(":uid",$_SESSION["id"]);
@@ -224,4 +224,28 @@ class SQL extends Database{
         $query->bindParam(":size",$size);
         $query->execute();
     }
+    
+    public function insertGroupAccess( $f_id, $g_id, $read, $write, $delete ){
+        $q = "INSERT INTO `files_access` (`f_id`, `g_id`, `i_read`, `i_write`, `i_delete`) VALUES (:fid, :gid, :read, :write, :delete);";          
+        $query = $this->sql->prepare($q);        
+        $query->bindParam(":fid",$f_id);
+        $query->bindParam(":gid",$g_id);        
+        $query->bindParam(":read",$read);        
+        $query->bindParam(":write",$write);        
+        $query->bindParam(":delete",$delete);
+        $query->execute();        
+    }
+    
+    public function checkGroupAccess($g_id,$f_id){
+        $query = $this->sql->prepare("SELECT * FROM `files_access` WHERE `f_id` = :fid AND `g_id` = :gid;");
+        $query->bindParam(':fid', $f_id);
+        $query->bindParam(':gid', $g_id);
+        $query->execute();
+        $nb = $query->rowCount();
+        if($nb == 1){
+            return true;        
+        }
+        return false;
+    }
+    
 }

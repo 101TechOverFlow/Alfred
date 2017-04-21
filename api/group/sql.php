@@ -6,7 +6,7 @@ require("../Database.core.php");
 class SQL extends Database{
     
     public function insertUserInGroup( $u_id, $g_id ){
-        $q = "INSERT INTO `users_mebers` (`u_id`, `g_name`) VALUES (:uid, :gid);";          
+        $q = "INSERT INTO `users_members` (`u_id`, `g_id`) VALUES (:uid, :gid);";          
         $query = $this->sql->prepare($q);        
         $query->bindParam(":uid",$u_id);
         $query->bindParam(":gid",$g_id);       
@@ -14,17 +14,30 @@ class SQL extends Database{
     }
     
     public function removeUserInGroup( $u_id, $g_id ){
-        $q = "DELETE FROM `users_mebers` WHERE `u_id`=:uid AND `g_ig`=:gid;";          
+        $q = "DELETE FROM `users_members` WHERE `u_id`=:uid AND `g_id`=:gid;";          
         $query = $this->sql->prepare($q);        
         $query->bindParam(":uid",$u_id);
         $query->bindParam(":gid",$g_id);       
         $query->execute();        
     }
     
+    public function checkUserMember($g_id,$u_id){
+        $query = $this->sql->prepare("SELECT * FROM `users_members` WHERE `u_id` = :uid AND `g_id` = :gid;");
+        $query->bindParam(':uid', $u_id);
+        $query->bindParam(':gid', $g_id);
+        $query->execute();
+        $nb = $query->rowCount();
+        if($nb == 1){
+            return true;        
+        }
+        return false;
+    }
+    
     public function updateGroupName( $g_id, $g_name ){
-        $q = "UPDATE `users_groups` SET `g_name` = :gname WHERE `g_id` = :gid;";
+        $q = "UPDATE `users_groups` SET `g_name` = :gname WHERE `g_id` = :gid AND `u_id`=:uid AND `g_editable`='1';";
         $query = $this->sql->prepare($q);
-        $query->bindParam(":gid",$g_id);
+        $query->bindParam(":gid",$g_id);        
+        $query->bindParam(":uid",$_SESSION["id"]);
         $query->bindParam(":gname",$g_name);
         $query->execute();
     }
@@ -49,7 +62,7 @@ class SQL extends Database{
         return $result;
     }
     
-    public function insertGroup( $g_name, $g_editable=0 ){
+    public function insertGroup( $g_name, $g_editable=1 ){
         $q = "INSERT INTO `users_groups` (`g_id`, `g_name`, `g_nb`, `g_editable`) VALUES (NULL, :gname, '0', :gedit);";          
         $query = $this->sql->prepare($q);        
         $query->bindParam(":gname",$g_name);        
@@ -66,7 +79,6 @@ class SQL extends Database{
         }
         $query = $this->sql->prepare($q);
         $query->bindParam(":gid",$g_id);        
-        $query->bindParam(":nb",$nb);
         $query->execute();
     }
     
