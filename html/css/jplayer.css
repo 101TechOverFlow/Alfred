@@ -1,0 +1,114 @@
+#music-player.dropdown-content {
+    line-height: initial;
+}
+
+#music-player {
+	width:400px;
+	color:#333;
+}
+#music-player .jp-title{
+    font-size: 14px;
+    width: 100%;
+}
+
+#music-player .jp-controls{
+    height: 40px;
+    line-height: 40px;
+    width: 260px;
+    margin: 0 auto;  
+}
+#music-player .jp-controls i {
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+#music-player .jp-controls i:hover {
+    color:#CCC;
+}
+#music-player .jp-state-looped .jp-repeat {
+	color:#4CAF50;
+}
+#music-player .jp-state-shuffled .jp-shuffle {
+	color:#4CAF50;
+}
+
+#music-player .jp-state-playing .fa-play:before{content:"\f04c" !important}
+
+#music-player .jp-progress {
+	height:15px;
+	width: 100%;
+	background-color: #CCC;
+}
+
+#music-player .jp-progress .jp-seek-bar{	
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+#music-player .jp-progress .jp-play-bar {
+	height: 100%;
+	width: 33%;
+	background-color: #3498db;
+}
+
+#music-player .jp-time-holder{
+	width:100%;
+	height: 20px;
+	line-height: 20px;
+	box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+}
+
+#music-player .jp-time-holder .jp-current-time{
+	margin-left: 5px;
+	display: inline-block;
+	float:left;
+}
+#music-player .jp-time-holder .jp-duration{
+	float:right;
+	display: inline-block;
+}
+
+#music-player .jp-playlist {
+	width: 100%;
+	max-height: 300px;
+	overflow: auto;
+}
+
+#music-player .jp-playlist ul li:hover {
+background-color: #EEE;
+}
+
+#music-player .jp-playlist ul li a.jp-playlist-item {
+	color:#333;
+	text-decoration: none;
+	width: 100%;
+	display:block;
+	
+}
+
+#music-player .jp-playlist ul li a.jp-playlist-item span {
+	color:#333;
+	font-size: 10px;
+}
+
+
+#music-player .jp-playlist ul li.jp-playlist-current a.jp-playlist-item  {
+	color:#3498db;
+}
+
+
+#music-player .jp-playlist ul li a.jp-playlist-item-remove {
+	text-decoration: none;
+	float:right;
+	margin-right: 5px;
+	font-size: 15px;
+	color: #999;
+}
+
+#music-player .jp-playlist ul li a.jp-playlist-item-remove:hover{
+	color: #333;
+}
+
+#music-player .jp-no-solution{
+	width: 100%;
+}
