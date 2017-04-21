@@ -108,7 +108,7 @@ class UserAPI{
             else if(strpos($f["f_mime"], 'video') !== false ){
                 $data["file"]["video"] += $f["f_size"];
             }
-            else if(strpos($f["f_mime"], 'audio') !== false || strpos($f["file"]["f_mime"], 'music') !== false){
+            else if(strpos($f["f_mime"], 'audio') !== false || strpos($f["f_mime"], 'music') !== false){
                 $data["file"]["music"] += $f["f_size"];
             }
             else{
@@ -117,6 +117,11 @@ class UserAPI{
         }
         $data["user"] = $this->database->getUserById($_SESSION["id"]);	
         die(json_encode(array("code"=> 302, "data" => $data)));
+    }
+    
+    public function getGroups(){
+        $g_data = $this->database->getUserGroups();
+        die(json_encode(array("code"=> 302, "data" => $g_data)));
     }
 }
 

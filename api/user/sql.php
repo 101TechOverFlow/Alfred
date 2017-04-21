@@ -32,4 +32,13 @@ class SQL extends Database{
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    
+    public function getUserGroups(){
+        $q = "SELECT `users_groups`.* FROM `users_groups`,`users_members` WHERE `users_members`.`g_id` = `users_groups`.`g_id` AND `users_members`.`u_id`=:uid";
+        $query = $this->sql->prepare($q);
+        $query->bindParam(":uid",$_SESSION["id"]);
+        $query->execute(); 
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }
