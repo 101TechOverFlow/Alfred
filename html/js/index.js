@@ -28,11 +28,16 @@ $(function(){
             $(".edit-tag").removeClass("active");
             $(".content .file.selected").css('box-shadow', '');
         }
+        
+        if($(e.target).parents(".edit-share.active").length == 0){
+            $(".edit-share").removeClass("active");
+            $(".content .file.selected").css('box-shadow', '');
+        }
 
     });
 
     $(document).on("mouseenter", '.menu-action i', function(){
-        if(!$(".menu-action .edit-tag").hasClass("active")){ 
+        if(!$(".menu-action .edit-tag").hasClass("active") && !$(".menu-action .edit-share").hasClass("active")){ 
             if($(this).hasClass("fa-trash-o")){
                 $(".content .file.selected").css('box-shadow', 'rgba(231, 76, 60, 0.75) 0px 0px 0px 4px');
             }
@@ -54,13 +59,23 @@ $(function(){
     $(document).on("click", '.menu-action i.fa-edit', function(e){
         $(".edit-tag input").val("");
         $(".edit-tag").toggleClass("active");
+        $(".edit-share").removeClass("active");
         $(".edit-tag input").focus();
         $(".content .file.selected").css('box-shadow', 'rgba(230,138,0, 0.75) 0px 0px 0px 4px');
         e.stopPropagation();        
     });
+    
+    $(document).on("click", '.menu-action i.fa-share-alt', function(e){
+        $(".edit-share input").val("");
+        $(".edit-share").toggleClass("active");
+        $(".edit-tag").removeClass("active");
+        $(".edit-share input").focus();
+        $(".content .file.selected").css('box-shadow', 'rgba(155, 89, 182, 0.75) 0px 0px 0px 4px');
+        e.stopPropagation();        
+    });
 
     $(document).on("mouseleave", '.menu-action i', function(){
-        if(!$(".menu-action .edit-tag").hasClass("active")){
+        if(!$(".menu-action .edit-tag").hasClass("active") && !$(".menu-action .edit-share").hasClass("active")){
             $(".content .file.selected").css('box-shadow', ''); 
         }
                

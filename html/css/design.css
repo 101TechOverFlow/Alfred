@@ -313,10 +313,10 @@ nav ul.top-nav > li.active {
     color:#e68a00;
 }
 
-#content .header .menu-action .edit-tag {
+#content .header .menu-action .edit-tag, #content .header .menu-action .edit-share {
     display:inline-block;
 }
-#content .header .menu-action .edit-tag input {    
+#content .header .menu-action .edit-tag input, #content .header .menu-action .edit-share input {    
     float:right;    
     opacity: 0;
     border: 0;
@@ -334,7 +334,10 @@ nav ul.top-nav > li.active {
 #content .header .menu-action .edit-tag.active i{
     color:#E68A00;
 }
-#content .header .menu-action .edit-tag.active input {
+#content .header .menu-action .edit-share.active i {
+    color:#9b59b6;
+}
+#content .header .menu-action .edit-tag.active input, #content .header .menu-action .edit-share.active input {
     opacity: 1;
     width: 125px;
 }
