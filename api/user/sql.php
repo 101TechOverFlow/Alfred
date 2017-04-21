@@ -41,4 +41,18 @@ class SQL extends Database{
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    
+    public function insertUser($u_name,$u_password,$u_mail,$u_size){
+        $time = time();
+        $q = "INSERT INTO `users` (`u_id`, `u_name`, `u_password`, `u_mail`, `u_timestamp`, `u_size_total`, `u_size_used`) "
+                . "VALUES (NULL, :uname, :upass, :umail, :time, :usize, '0');";
+        $query = $this->sql->prepare($q);
+        $query->bindParam(":time",$time);
+        $query->bindParam(":uname",$u_name);
+        $query->bindParam(":upass",$u_password);
+        $query->bindParam(":umail",$u_mail);
+        $query->bindParam(":usize",$u_size);
+        $query->execute(); 
+        
+    }
 }

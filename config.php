@@ -9,3 +9,4 @@ define('SQL_PASS', '');
 // Temporary directory to upload file's chunks
 define('TMP_DIR','/home/charlie/www/PiCloud/tmp/');
 
+define('U_SIZE','3000000000'); // 3Go

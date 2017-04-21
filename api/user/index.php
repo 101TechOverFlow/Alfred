@@ -78,10 +78,10 @@ class UserAPI{
         if($udata["u_password"] == $old_pass){
             if($old_pass != "" && $new_pass1 == $new_pass2){
                 $this->database->updateUserPassword($new_pass1);
-                die(json_encode(array("code"=> 302,"data"=>"done")));
+                die(json_encode(array("code"=> 302,"data"=>"success")));
             }
         }
-        die(json_encode(array("code"=> 303,"data"=>"Erreur")));
+        die(json_encode(array("code"=> 303,"data"=>"Error")));
     }
     
     /**
@@ -119,9 +119,25 @@ class UserAPI{
         die(json_encode(array("code"=> 302, "data" => $data)));
     }
     
-    public function getGroups(){
+    private function getGroups(){
         $g_data = $this->database->getUserGroups();
         die(json_encode(array("code"=> 302, "data" => $g_data)));
+    }
+    
+    private function register($params){
+        $params = json_decode($params);        
+        $username = htmlspecialchars(trim(@$params->username));
+        $password = htmlspecialchars(trim(@$params->password));
+        $mail = htmlspecialchars(trim(@$params->mail));
+        
+        if($username != "" && $password != "" && $mail != ""){
+            $this->database->insertUser($username, $password, $mail, U_SIZE);
+            die(json_encode(array("code"=> 302, "data" => "success")));
+        }
+        else {
+            die(json_encode(array("code"=> 303, "data" => "Error")));
+        }
+        
     }
 }
 
