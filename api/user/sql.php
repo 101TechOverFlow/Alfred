@@ -13,9 +13,9 @@ class SQL extends Database{
      * @return boolean : false if name/password are incorrect, user data if name/password are correct
      */
     public function checkCredentials($u_name,$u_password){
-        $query = $this->sql->prepare("SELECT * FROM `users` WHERE `password` = :pass AND `username` = :uname LIMIT 1;");
-        $query->bindParam(':pass', $password);
-        $query->bindParam(':uname', $uname);
+        $query = $this->sql->prepare("SELECT * FROM `users` WHERE `u_password` = :pass AND `u_name` = :uname LIMIT 1;");
+        $query->bindParam(':pass', $u_password);
+        $query->bindParam(':uname', $u_name);
         $query->execute();
         $nb = $query->rowCount();
         if($nb == 1){
