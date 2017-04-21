@@ -1,4 +1,37 @@
+function formatBytes( bytes , precision=1){
+    var units = ["B","Ko","Mo","Go","To","Po"];
+    bytes = Math.max(bytes, 0);
+    pow = Math.floor((bytes ? Math.log(bytes) : 0 ) / Math.log(1024));
+    pow = Math.min(pow, units.length - 1);
+    bytes /= Math.pow(1024,pow);
+    return Math.round(bytes * Math.pow(10, precision)) / Math.pow(10, precision) +' '+units[pow];
+}
 
+function formatBitrate(bits) {
+    if (typeof bits !== 'number') {
+        return '';
+    }
+    if (bits >= 1000000000) {
+        return (bits / 1000000000).toFixed(2) + ' Gbit/s';
+    }
+    if (bits >= 1000000) {
+        return (bits / 1000000).toFixed(2) + ' Mbit/s';
+    }
+    if (bits >= 1000) {
+        return (bits / 1000).toFixed(2) + ' kbit/s';
+    }
+    return bits.toFixed(2) + ' bit/s';            
+}
+
+function formatTime(seconds) {
+    var date = new Date(seconds * 1000),
+        days = Math.floor(seconds / 86400);
+    days = days ? days + 'd ' : '';
+    return days +
+        ('0' + date.getUTCHours()).slice(-2) + ':' +
+        ('0' + date.getUTCMinutes()).slice(-2) + ':' +
+        ('0' + date.getUTCSeconds()).slice(-2);
+}
 
 function selectFile(fId){
     $(".file[data-f_id="+fId+"]").toggleClass("selected");

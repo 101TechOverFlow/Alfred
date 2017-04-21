@@ -30,7 +30,7 @@ class uploadHandler{
     );
 
  	public function __construct($files){
- 		$this->database = new Database();
+ 		$this->database = new SQL();
  		$upload = $files["files"];
  		$content_disposition_header = @$_SERVER['HTTP_CONTENT_DISPOSITION'];
 		$file_name = $content_disposition_header ?
@@ -81,7 +81,7 @@ class uploadHandler{
 	    	file_put_contents($file->path,$chunk_content,FILE_APPEND);
 	    	if(filesize($file->path) == $size){
 	    		$udata = $this->database->getUserById($_SESSION["id"]);
-	    		if($udata["u_size_used"]+$size <= $udata["u_size_total"]){ // Userhas enougth space
+                        if($udata["u_size_used"]+$size <= $udata["u_size_total"]){ // Userhas enougth space
 	    			// File
 					$ffilename = $this->getRandomName().".".$file->extension;
 					$fid = $this->database->insertFile($file->name,$file->extension,mime_content_type($file->path),$file->size,md5_file($file->path),$ffilename);

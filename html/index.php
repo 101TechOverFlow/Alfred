@@ -43,15 +43,20 @@
             </div>
           </div>
         
+        <!-- LIBRARIES SCRIPT -->
+        <script type="text/javascript" src="html/js/libs/jquery-1.12.2.min.js"></script>
+        <script type="text/javascript" src="html/js/libs/jquery.ui.widget.js"></script>
+        <script type="text/javascript" src="html/js/libs/jquery.iframe-transport.js"></script>
+        <script type="text/javascript" src="html/js/libs/jquery.fileupload.js"></script>
         
-        <script type="text/javascript" src="html/js/jquery-1.12.2.min.js"></script>
+        <!-- ALFRED SCRIPT -->
         <script type="text/javascript" src="html/js/route.core.js"></script>
         <script type="text/javascript" src="html/js/templates.core.js"></script>
         <script type="text/javascript" src="html/js/modules/files.module.js"></script>  
         <script type="text/javascript" src="html/js/index.js"></script>
         <script type="text/javascript" src="html/js/functions.js"></script>
-
-        <!-- TEMPLATES -->
-        <script type="text/template" data-template="file" src="html/templates/files/file.php"></script>
+        <script type="text/javascript" src="html/js/uploads.js"></script>
+        
+        
     </body>
 </html>

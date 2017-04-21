@@ -28,7 +28,7 @@
             </div>           
         </div>
         
-        <script src="html/js/jquery-1.12.2.min.js"></script>
+        <script src="html/js/libs/jquery-1.12.2.min.js"></script>
         <script src="html/js/login.js"></script>
 
     </body>

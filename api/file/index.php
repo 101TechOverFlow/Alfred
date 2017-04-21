@@ -21,8 +21,8 @@ class FileAPI{
                     die(json_encode(array("code" => 404, "data" => "unknown method in files modules")));			
                 }
             }
-            else if($_SERVER['REQUEST_METHOD'] == "POST"){
-                $action = @$_GET["a"];                    
+            else if($_SERVER['REQUEST_METHOD'] == "POST"){            
+                $action = @$_POST["a"];                    
                 $files = @$_FILES;
                 if($action =="upload"){
                     $uploadHandler = new uploadHandler($files);
@@ -215,7 +215,6 @@ class FileAPI{
                         flush();
                         $file = fopen($f_path, 'r');
                         $len = 10*1024;
-                        echo $f_path;
                         while (!feof($file)) {
                             print fread( $file, $len );
                             flush();
