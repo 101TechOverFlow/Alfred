@@ -18,6 +18,14 @@ class Database {
         return $result;
     }
     
+    public function insertGroup( $g_name, $u_id , $g_editable=1 ){
+        $q = "INSERT INTO `users_groups` (`g_id`, `g_name`, `g_nb`, `g_editable`,`u_id`) VALUES (NULL, :gname, '0', :gedit, :uid);";          
+        $query = $this->sql->prepare($q);        
+        $query->bindParam(":gname",$g_name);        
+        $query->bindParam(":gedit",$g_editable);    
+        $query->bindParam(":uid",$u_id);
+        $query->execute();        
+    }
 
     
 

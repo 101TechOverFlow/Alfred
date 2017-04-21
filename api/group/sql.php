@@ -61,15 +61,7 @@ class SQL extends Database{
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-    
-    public function insertGroup( $g_name, $g_editable=1 ){
-        $q = "INSERT INTO `users_groups` (`g_id`, `g_name`, `g_nb`, `g_editable`) VALUES (NULL, :gname, '0', :gedit);";          
-        $query = $this->sql->prepare($q);        
-        $query->bindParam(":gname",$g_name);        
-        $query->bindParam(":gedit",$g_editable);         
-        $query->execute();        
-    }
-    
+     
     public function updateGroupNb( $g_id , $method="add"){
         if($method=="add"){
             $q = "UPDATE `users_groups` SET `g_nb` = `g_nb` + 1 WHERE `g_id` = :gid;";

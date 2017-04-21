@@ -106,7 +106,7 @@ class GroupAPI{
         $params = json_decode($params);        
         $g_name = htmlspecialchars(trim(@$params->g_name));
         if($g_name != ""){
-            $this->database->insertGroup($g_name);
+            $this->database->insertGroup($g_name,$_SESSION["id"]);
             die(json_encode(array("code"=>302, "data"=> "success")));
         }
         die(json_encode(array("code"=> 404, "data" => "wrong group name")));

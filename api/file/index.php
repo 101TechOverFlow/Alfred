@@ -319,14 +319,24 @@ class FileAPI{
         else if($rule == "write"){
             $write = 1; $read = 1;
         }
-        else {
+        else if($rule == "read"){
             $read = 1;
         }        
         foreach($f_ids as $f_id){
             if(is_numeric($f_id)){
                 $f_data = $this->database->getFile($f_id);
-                if($f_data["f_id"] == $f_id && !$this->database->checkGroupAccess($g_id,$f_id)){
-                    $this->database->insertGroupAccess($f_id, $g_id, $read, $write, $delete);
+                if($f_data["u_id"] == $_SESSION["id"]){
+                    if($read == 0){
+                        $this->database->deleteFileAccess($f_id, $g_id);
+                    }
+                    else {
+                        if($this->database->checkFileAccess($f_id,$g_id)){
+                            $this->database->updateFileAccess($f_id, $g_id, $read, $write, $delete);
+                        }   
+                        else {
+                            $this->database->insertFileAccess($f_id, $g_id, $read, $write, $delete);
+                        }                
+                    }                    
                 }
             }  
         }

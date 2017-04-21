@@ -225,7 +225,7 @@ class SQL extends Database{
         $query->execute();
     }
     
-    public function insertGroupAccess( $f_id, $g_id, $read, $write, $delete ){
+    public function insertFileAccess( $f_id, $g_id, $read, $write, $delete ){
         $q = "INSERT INTO `files_access` (`f_id`, `g_id`, `i_read`, `i_write`, `i_delete`) VALUES (:fid, :gid, :read, :write, :delete);";          
         $query = $this->sql->prepare($q);        
         $query->bindParam(":fid",$f_id);
@@ -236,7 +236,26 @@ class SQL extends Database{
         $query->execute();        
     }
     
-    public function checkGroupAccess($g_id,$f_id){
+    public function deleteFileAccess($f_id,$g_id){
+        $q = "DELETE FROM `files_access` WHERE `files_access`.`f_id` = :fid AND `files_access`.`g_id`= :gid";
+        $query = $this->sql->prepare($q);        
+        $query->bindParam(":gid",$g_id); 
+        $query->bindParam(":fid",$f_id);        
+        $query->execute(); 
+    }
+    
+    public function updateFileAccess( $f_id, $g_id, $read, $write, $delete ){
+        $q = "UPDATE `files_access` SET `i_read` = :read, `i_write` = :write, `i_delete` = :delete WHERE `album_access`.`g_id` = :gid AND `album_access`.`f_id` = :fid;";
+        $query = $this->sql->prepare($q);        
+        $query->bindParam(":fid",$f_id);
+        $query->bindParam(":gid",$g_id);        
+        $query->bindParam(":read",$read);        
+        $query->bindParam(":write",$write);        
+        $query->bindParam(":delete",$delete);
+        $query->execute();
+    }
+    
+    public function checkFileAccess($g_id,$f_id){
         $query = $this->sql->prepare("SELECT * FROM `files_access` WHERE `f_id` = :fid AND `g_id` = :gid;");
         $query->bindParam(':fid', $f_id);
         $query->bindParam(':gid', $g_id);

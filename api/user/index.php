@@ -131,7 +131,8 @@ class UserAPI{
         $mail = htmlspecialchars(trim(@$params->mail));
         
         if($username != "" && $password != "" && $mail != ""){
-            $this->database->insertUser($username, $password, $mail, U_SIZE);
+            $u_id = $this->database->insertUser($username, $password, $mail, U_SIZE);
+            $this->database->insertGroup($username,$u_id , 0);
             die(json_encode(array("code"=> 302, "data" => "success")));
         }
         else {

@@ -53,6 +53,6 @@ class SQL extends Database{
         $query->bindParam(":umail",$u_mail);
         $query->bindParam(":usize",$u_size);
         $query->execute(); 
-        
+        return $this->sql->lastInsertId();
     }
 }
