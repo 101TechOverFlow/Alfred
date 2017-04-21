@@ -79,12 +79,28 @@ class FileAPI{
             $u_data = $this->database->getUserById($file["u_id"]);
             $results[$k]["u_name"] = $u_data["u_name"];
             $t_data = $this->database->getFileTags( $file["f_id"]);
-            $results[$k]["t_name"] = $t_data;
+            if($t_data == null){
+                $results[$k]["tags"] = false;            
+            } else {
+               $results[$k]["tags"] = $t_data;             
+            }
+            $results[$k]["f_timestamp"] = date(TIME_PATTERN, $results[$k]["f_timestamp"]);
+            $results[$k]["f_size"] = $this->formatBytes($results[$k]["f_size"]);
+
             foreach ($fp_data as $path) {
                 $results[$k]["f_path"][] = $path["s_path"];
             }		
         }	
         die(json_encode(array("code"=>302, "data"=> $results)));
+    }
+    
+    private function formatBytes($bytes, $precision = 2) { 
+        $units = array('o', 'Ko', 'Mo', 'Go', 'To', 'Po');
+        $bytes = max($bytes, 0); 
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
+        $pow = min($pow, count($units) - 1); 
+        $bytes /= pow(1024, $pow);
+        return round($bytes, $precision) . ' ' . $units[$pow]; 
     }
     
     private function searchTags($params){		

@@ -89,10 +89,21 @@ class SQL extends Database{
     }
     
     public function getTags( $trash=0 ){      
-        $q = "SELECT DISTINCT `tags`.`t_name` FROM `files`,`files_tags`,`tags`,`files_access` WHERE (`tags`.`t_id`=`files_tags`.`t_id` AND `files`.`u_id`='1' AND `files`.`f_trash` = :trash AND `files_tags`.`f_id`=`files`.`f_id`) OR (`files_access`.`i_read`='1' AND `files_access`.`u_id`='1' AND `files_tags`.`f_id`=`files_access`.`f_id` AND `tags`.`t_id`=`files_tags`.`t_id` AND `files_tags`.`f_id`= `files`.`f_id` AND `files`.`f_trash` = :trash ) ORDER BY `t_usage` ASC LIMIT 50;";
+        $q = "SELECT DISTINCT `tags`.`t_name` FROM `files`,`files_tags`,`tags`,`files_access`,`users_members` WHERE (`files`.`u_id`=:uid OR ( `files_access`.`f_id` = `files`.`f_id` AND `files_access`.`g_id` = `users_members`.`g_id` AND `users_members`.`u_id` = :uid AND `files_access`.`i_read`='1' )) AND `files`.`f_trash` = :trash AND `files_tags`.`f_id`=`files`.`f_id` AND `tags`.`t_id` = `files_tags`.`t_id` ORDER BY `t_usage` ASC LIMIT 50;";
         $query = $this->sql->prepare($q);
         $query->bindParam(":uid",$_SESSION["id"]);        
         $query->bindParam(":trash",$trash);
+        $query->execute(); 
+        $result = $query->fetchAll(PDO::FETCH_NUM);
+        return $result;
+    }
+    
+    public function searchTags( $searched ,$trash=0 ){
+        $list = '("'.implode('","',$searched).'")';
+        $q = "SELECT DISTINCT `tags`.`t_name` FROM `tags`, `files_tags`, `files`, `files_access`, `users_members` WHERE( `files`.`u_id` = :uid OR ( `files_access`.`f_id` = `files`.`f_id` AND `files_access`.`g_id` = `users_members`.`g_id` AND `users_members`.`u_id` = :uid AND `files_access`.`i_read` = '1') ) AND `files`.`f_trash` = :trash AND ( `tags`.`t_id` = `files_tags`.`t_id` AND `tags`.`t_name` NOT IN $list AND `files_tags`.`f_id` IN (SELECT DISTINCT `files`.`f_id` FROM `files`, `files_tags`, `tags` WHERE ( `files`.`f_extension` IN $list ) OR ( `files`.`f_name` IN $list ) OR ( `files_tags`.`f_id` = `files`.`f_id` AND `files_tags`.`t_id` = `tags`.`t_id` AND `tags`.`t_name` IN $list )) ) ORDER BY `t_search` DESC, `t_usage` ASC LIMIT 50; ";
+        $query = $this->sql->prepare($q);
+        $query->bindParam(":uid",$_SESSION["id"]);
+        $query->bindParam(":trash",$trash);       
         $query->execute(); 
         $result = $query->fetchAll(PDO::FETCH_NUM);
         return $result;
