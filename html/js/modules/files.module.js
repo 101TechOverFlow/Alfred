@@ -24,6 +24,7 @@ class Files {
                         }
                     });
                     $(".file[data-f_id="+fId+"]").remove();
+                    selectedFile = [];
                 }
             }
         }
@@ -46,6 +47,7 @@ class Files {
                     }
                 });
                 $(".file[data-f_id="+fId+"]").remove();
+                selectedFile = [];
             }			
         }
     }
@@ -69,9 +71,20 @@ class Files {
                             }
                         });
                         $(".file[data-f_id="+fId+"]").remove();
+                        selectedFile = [];
                     }
             }
         }
+    }
+    
+    download(){
+        if(selectedFile.length > 0){
+            for(var i=0;i<selectedFile.length;i++){
+                window.open("api/file/index.php?a=download&p={\"f_id\":"+selectedFile[i]+"}");				
+            }
+        }
+        selectedFile = [];
+        $(".file.selected").css('box-shadow', '').removeClass("selected");
     }
     
     removeTag( fId , tId){
