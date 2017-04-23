@@ -28,7 +28,6 @@ class Templates{
     }
     
     buildAutocompleteShare(shares){
-        console.log(shares);
         var url_file_tpl = "html/templates/files/autocompleteShare.php";
         var target =".edit-share .dropdown-content";
         $.get(

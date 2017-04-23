@@ -139,7 +139,6 @@ class Files {
                     url:formData,
                     type: 'GET',
                     success: function( data ){
-                        console.log(data);
                         var res = JSON.parse(data);		        	
                         if(res.code === 302){		        		
 

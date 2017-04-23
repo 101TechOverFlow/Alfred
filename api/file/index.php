@@ -343,7 +343,6 @@ class FileAPI{
     
     private function share($params){
         $params = json_decode($params);
-        var_dump($params);
         $f_id = -1;
         if(is_numeric(@$params->f_id)){
             $f_id = $params->f_id;

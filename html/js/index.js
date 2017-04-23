@@ -78,8 +78,7 @@ $(function(){
         $(".edit-tag .dropdown-content").html("");
         $(".edit-share input").focus();
         $(".content .file.selected").css('box-shadow', 'rgba(155, 89, 182, 0.75) 0px 0px 0px 4px');
-        $(".edit-share .dropdown-content").toggle();
-        
+        $(".edit-share .dropdown-content").toggle();        
         e.stopPropagation();        
     });
     
@@ -108,11 +107,7 @@ $(function(){
     
     $(document).on("keyup",'.edit-share input', function(e){
         var tag = $(".edit-share input").val();
-        console.log(e);
-        if(e.which === 32 || e.which === 13){
-              
-        }
-        else {
+        if(e.which !== 32 && e.which !== 13){
             var formData = "api/file/index.php?a=autocompleteShare&p={\"query\":\""+tag+"\"}";			
             $.ajax({
             url:formData,
