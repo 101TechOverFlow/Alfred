@@ -144,6 +144,28 @@ class FileAPI{
         }
     }
     
+    private function autocompleteTag( $params ){
+        $params = json_decode($params);
+        $query = htmlspecialchars(trim(@$params->query));
+        $results= array();
+        if(strlen($query) >= 1){
+            $results = $this->database->autocompleteTag($query);
+            
+        }
+        die(json_encode(array("code"=> 302, "data" => $results)));        
+    }
+    
+    private function autocompleteShare( $params ){
+        $params = json_decode($params);
+        $query = htmlspecialchars(trim(@$params->query));
+        $results= array();
+        if(strlen($query) >= 1){
+            $results = $this->database->autocompleteShare($query);
+            
+        }
+        die(json_encode(array("code"=> 302, "data" => $results)));        
+    }
+    
     private function addTag( $params ){
         $params = json_decode($params);
         $tag = htmlspecialchars(trim(@$params->tag));
@@ -321,10 +343,14 @@ class FileAPI{
     
     private function share($params){
         $params = json_decode($params);
-        $f_ids = @$params->f_id; // Array of file ids        
+        var_dump($params);
+        $f_id = -1;
+        if(is_numeric(@$params->f_id)){
+            $f_id = $params->f_id;
+        }
         $g_id = -1;
         if(is_numeric(@$params->g_id)){
-            $f_id = $params->g_id;
+            $g_id = $params->g_id;
         }
         $rule = htmlspecialchars(trim(@$params->rule));
         $read = 0; $write = 0; $delete = 0;
@@ -337,25 +363,26 @@ class FileAPI{
         else if($rule == "read"){
             $read = 1;
         }        
-        foreach($f_ids as $f_id){
-            if(is_numeric($f_id)){
-                $f_data = $this->database->getFile($f_id);
-                if($f_data["u_id"] == $_SESSION["id"]){
-                    if($read == 0){
-                        $this->database->deleteFileAccess($f_id, $g_id);
-                    }
-                    else {
-                        if($this->database->checkFileAccess($f_id,$g_id)){
-                            $this->database->updateFileAccess($f_id, $g_id, $read, $write, $delete);
-                        }   
-                        else {
-                            $this->database->insertFileAccess($f_id, $g_id, $read, $write, $delete);
-                        }                
-                    }                    
+        echo $g_id;
+        if($f_id > 0 && $g_id >0){
+            $f_data = $this->database->getFile($f_id);
+            if($f_data["u_id"] == $_SESSION["id"]){
+                if($read == 0){
+                    $this->database->deleteFileAccess($f_id, $g_id);
                 }
-            }  
-        }
-        die(json_encode(array("code"=> 302, "data" => "done")));                
+                else {
+                    if($this->database->checkFileAccess($f_id,$g_id)){
+                        $this->database->updateFileAccess($f_id, $g_id, $read, $write, $delete);
+                    }   
+                    else {
+                        $this->database->insertFileAccess($f_id, $g_id, $read, $write, $delete);
+                    }                
+                }                    
+            }
+            die(json_encode(array("code"=> 302, "data" => "done"))); 
+        }  
+        die(json_encode(array("code"=> 303, "data" => "wrong arguments"))); 
+                       
     }
     
 }

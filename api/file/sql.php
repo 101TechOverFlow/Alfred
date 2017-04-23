@@ -109,6 +109,26 @@ class SQL extends Database{
         return $result;
     }
     
+    public function autocompleteTag( $search ){
+        $search = "%".$search."%";
+        $q = "SELECT `t_name` FROM `tags` WHERE `t_name` LIKE :query LIMIT 15;";
+        $query = $this->sql->prepare($q);
+        $query->bindParam(":query",$search);
+        $query->execute();
+        $result = $query->fetchAll(PDO::FETCH_NUM);
+        return $result;       
+    }
+    
+    public function autocompleteShare( $search ){
+        $search = "%".$search."%";
+        $q = "SELECT `g_id`,`g_name` FROM `users_groups` WHERE `g_name` LIKE :query LIMIT 15;";
+        $query = $this->sql->prepare($q);
+        $query->bindParam(":query",$search);
+        $query->execute();
+        $result = $query->fetchAll(PDO::FETCH_NUM);
+        return $result;       
+    }
+    
     public function removeFileTag($fid, $tid){
         $q = "DELETE `files_tags` FROM `files`,`files_tags`,`files_access` WHERE `files_tags`.`f_id` = :fid AND `files_tags`.`t_id`= :tid";
         $query = $this->sql->prepare($q);        
@@ -256,7 +276,7 @@ class SQL extends Database{
     }
     
     public function updateFileAccess( $f_id, $g_id, $read, $write, $delete ){
-        $q = "UPDATE `files_access` SET `i_read` = :read, `i_write` = :write, `i_delete` = :delete WHERE `album_access`.`g_id` = :gid AND `album_access`.`f_id` = :fid;";
+        $q = "UPDATE `files_access` SET `i_read` = :read, `i_write` = :write, `i_delete` = :delete WHERE `g_id` = :gid AND `f_id` = :fid;";
         $query = $this->sql->prepare($q);        
         $query->bindParam(":fid",$f_id);
         $query->bindParam(":gid",$g_id);        

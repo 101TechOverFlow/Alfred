@@ -3,7 +3,7 @@
 **Alfred gives you freedom and control over your own data. A personal cloud which runs on your own server.**
 
 ## Disclaimers
-Please keep in mind that Alfred is in early beta release
+Please keep in mind that Alfred is in early beta release.
 
 ## Why is it Awesome and Fantastic
 Alfred is designed to keep your data secure on your local network. It is designed to work on a Raspberry Pi as a NAS.

@@ -16,6 +16,29 @@ class Templates{
         return new Function(code.replace(/[\r\t\n]/g, '')).apply(options);
     }
     
+    buildAutocompleteTag(tags){
+        var url_file_tpl = "html/templates/files/autocompleteTag.php";
+        var target =".edit-tag .dropdown-content";
+        $.get(
+            url_file_tpl, 
+            function(template){                     
+                 $(target).html(_TPL.render(template,tags));
+            }
+        );
+    }
+    
+    buildAutocompleteShare(shares){
+        console.log(shares);
+        var url_file_tpl = "html/templates/files/autocompleteShare.php";
+        var target =".edit-share .dropdown-content";
+        $.get(
+            url_file_tpl, 
+            function(template){                     
+                 $(target).html(_TPL.render(template,shares));
+            }
+        );
+    }
+    
     buildActionMenu(){
         var url ="";
         var target ="#content .header .menu-action";

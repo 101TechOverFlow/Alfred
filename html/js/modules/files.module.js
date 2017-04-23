@@ -88,7 +88,6 @@ class Files {
     }
     
     removeTag( fId , tId){
-	$(".file[data-f_id="+fId+"]").toggleClass("selected");    
 	var r = confirm("Remove this tag ?");
         if(r){
             var formData = "api/file/index.php?a=removeTag&p={\"f_id\":"+fId+",\"t_id\":"+tId+"}";	    	
@@ -108,34 +107,52 @@ class Files {
         }    	
     }
     
-    addTag( event ){
+    addTag( tag ){
         if(selectedFile.length > 0){
-            var input = event.target;
-            if(event.which === 32 || event.which === 13){
-            var tag = input.value.replace(/\s+/g,'');
-                if(tag !== ""){
-                    for(var i=0;i<selectedFile.length;i++){	
-                        var formData = "api/file/index.php?a=addTag&p={\"f_id\":"+selectedFile[i]+",\"tag\":\""+tag+"\"}";                  
-                        $.ajax({
-                            url:formData,
-                            type: 'GET',
-                            success: function( data ){
-                                var res = JSON.parse(data);		        	
-                                if(res.code == 302){		        		
+            for(var i=0;i<selectedFile.length;i++){
+                var formData = "api/file/index.php?a=addTag&p={\"f_id\":"+selectedFile[i]+",\"tag\":\""+tag+"\"}";                  
+                $.ajax({
+                    url:formData,
+                    type: 'GET',
+                    success: function( data ){
+                        var res = JSON.parse(data);		        	
+                        if(res.code === 302){		        		
 
-                                }
-                                else{
-                                        alert(res.data);
-                                }
-                                input.value = "";
-                            },
-                            error: function(){
-                               input.value = "";
-                            }
-                        });       		
+                        }
+                        else{
+                                alert(res.data);
+                        }                
                     }
-                }
+                });       		
             }
+            $(".edit-tag input").val("");
+            $(".edit-tag .dropdown-content").html("");
+            $(".edit-tag .dropdown-content").hide();
+        }
+    }
+    
+    share( g_id ){
+        if(selectedFile.length > 0){
+            for(var i=0;i<selectedFile.length;i++){
+                var formData = "api/file/index.php?a=share&p={\"f_id\":"+selectedFile[i]+",\"g_id\":"+g_id+",\"rule\":\"read\"}";                  
+                $.ajax({
+                    url:formData,
+                    type: 'GET',
+                    success: function( data ){
+                        console.log(data);
+                        var res = JSON.parse(data);		        	
+                        if(res.code === 302){		        		
+
+                        }
+                        else{
+                                alert(res.data);
+                        }                
+                    }
+                });       		
+            }
+            $(".edit-share input").val("");
+            $(".edit-share .dropdown-content").html("");
+            $(".edit-share .dropdown-content").hide();
         }
     }
     

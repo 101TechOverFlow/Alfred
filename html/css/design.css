@@ -316,6 +316,23 @@ nav ul.top-nav > li.active {
 #content .header .menu-action .edit-tag, #content .header .menu-action .edit-share {
     display:inline-block;
 }
+
+#content .header .menu-action .edit-tag .dropdown-content{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.1);
+    width:291px;
+    font-size: 14px;
+    display: none;
+}
+#content .header .menu-action .edit-share .dropdown-content{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.1);
+    width:291px;
+    font-size: 14px;
+    display: none;
+    left:0px;
+}
+
 #content .header .menu-action .edit-tag input, #content .header .menu-action .edit-share input {    
     float:right;    
     opacity: 0;
