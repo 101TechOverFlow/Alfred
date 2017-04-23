@@ -31,11 +31,32 @@ function Route() {
                      _FILES.displayFiles(data);
                      _FILES.displayTags(data);
                     break;
-
+                case "logout":
+                    this.logout();                    
+                    break;
                 default:
                     this.loadModule("#files");
                     break;
             }
+        }
+        
+        this.logout = function(){
+            var formData = "api/user/index.php?a=logout";                  
+            $.ajax({
+                url:formData,
+                type: 'GET',
+                success: function( data ){
+                    var res = JSON.parse(data);		        	
+                    if(res.code === 302){
+                        window.location.hash = "login";
+                        location.reload();
+                    }
+                    else{
+                            alert(res.data);
+                    }                
+                }
+            });  
+            
         }
         
         this.addSearchTag = function ( tag ){    
